@@ -29,4 +29,4 @@ for commit in commits:
     print(runs[commit_id])
 
 with open('data/data/runs.json', 'w') as fd:
-    json.dump(runs, fd, indent=1)
+    json.dump(runs, fd, indent=1, sort_keys=True)
