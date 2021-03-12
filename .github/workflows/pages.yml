@@ -34,7 +34,8 @@ jobs:
       - name: Store Data
         run: |
           if [ -n "$(cd data && git status --porcelain)" ]; then
-            echo "there are changes";
+            (cd data && git add --all && git commit -m "updated data/")
+            (cd data && git push)
           fi
 
 #       - name: Generate
