@@ -11,9 +11,25 @@ jobs:
         run: |
           git clone --single-branch --no-checkout "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" repo
           
-      - name: Generate Data
+      - name: Clone Data
         run: |
-          bash ./generate_data.sh
+          if ! git clone --branch data "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" data
+          then
+              git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" data
+              (cd data && git checkout --orphan data)
+          fi
+
+      - name: Collect
+        run: |
+          python3 collect.py
+
+      - name: Run
+        run: |
+          python3 run.py
+
+      - name: Log Repo State
+        run: |
+          du -ah .
 
 #       - name: Generate
 #         run: |
