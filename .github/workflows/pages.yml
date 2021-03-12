@@ -18,6 +18,10 @@ jobs:
               git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" data
               (cd data && git checkout --orphan data && git reset --hard)
           fi
+          
+      - name: Update Data Template
+        run: |
+          cp data_template/* data/ -R
 
       - name: Collect
         run: |
@@ -41,14 +45,3 @@ jobs:
             (cd data && git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }})
             (cd data && git push --set-upstream origin data)
           fi
-
-#       - name: Generate
-#         run: |
-#           mkdir gh-pages/
-#           echo "hello" > gh-pages/index.html
-
-#       - name: Deploy
-#         uses: JamesIves/github-pages-deploy-action@4.1.0
-#         with:
-#           branch: gh-pages
-#           folder: gh-pages/
