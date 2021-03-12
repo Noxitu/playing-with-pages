@@ -9,6 +9,7 @@ jobs:
 
       - name: Log
         run: |
+          export
           git log --oneline
           git count-objects --verbose
 
