@@ -40,7 +40,7 @@ jobs:
 
           if [ -n "$(cd data && git status --porcelain)" ]; then
             (cd data && git add --all && git commit -m "updated data/")
-            (cd data && git push)
+            (cd data && git push --set-upstream origin data)
           fi
 
 #       - name: Generate
