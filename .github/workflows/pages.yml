@@ -16,7 +16,7 @@ jobs:
           if ! git clone --branch data "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" data
           then
               git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" data
-              (cd data && git checkout --orphan data)
+              (cd data && git checkout --orphan data && git reset --hard)
           fi
 
       - name: Collect
@@ -29,7 +29,13 @@ jobs:
 
       - name: Log Repo State
         run: |
-          du -ah .
+          du -ah . | grep -v "/."
+          
+      - name: Store Data
+        run: |
+          if [ -n "$(cd data && git status --porcelain)" ]; then
+            echo "there are changes";
+          fi
 
 #       - name: Generate
 #         run: |
