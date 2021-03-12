@@ -33,10 +33,11 @@ jobs:
           
       - name: Store Data
         run: |
+          git config user.name "Noxitu CI"
+          git config user.email "noxitu-ci@null"
+
           if [ -n "$(cd data && git status --porcelain)" ]; then
             (cd data && git add --all && git commit -m "updated data/")
-            git config --global user.name "Noxitu CI"
-            git config --global user.email "noxitu-ci@null"
             (cd data && git push)
           fi
 
