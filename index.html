@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<style>
+  svg {
+    width: 600px; 
+    height: 180px;
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+  }
+  polyline {
+    fill: none;
+    stroke: #0074d9;
+    stroke-width: 2px;
+  }
+<body>
+  <svg viewBox="0 0 600 180" id="mean"></svg><br>
+  <svg viewBox="0 0 600 180" id="stddev"></svg>
+  <ul>
+
+  </ul>
+</body>
+<script>
+  async function init()
+  {
+    const commits = await fetch('data/commits.json').then( res => res.json() )
+    const runs = await fetch('data/runs.json').then( res => res.json() )
+    
+    const x = idx => 600 * idx / (commits.length-1)
+    const y1 = val => 180 * (val-70) / 60
+    const y2 = val => 180 * (val) / 30
+
+    const mean = []
+    const stddev = []
+    var i = 0
+    for (const commit of commits)
+    {
+      const li = document.createElement('li')
+      li.innerText = commit.message
+      document.querySelector('ul').append(li)
+
+      const run = runs[commit.commit]
+
+      mean.push(`${x(i)},${y1(run.mean)}`)
+      stddev.push(`${x(i)},${y2(run.stddev)}`)
+      i += 1
+    }
+
+    document.querySelector('#mean').innerHTML = `<polyline points="${mean.join(' ')}" />`
+    document.querySelector('#stddev').innerHTML = `<polyline points="${stddev.join(' ')}" />`
+  }
+  
+  init()
+</script>
