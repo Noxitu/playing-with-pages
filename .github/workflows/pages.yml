@@ -33,13 +33,12 @@ jobs:
           
       - name: Store Data
         run: |
-        
-          (cd data && git config user.name "Noxitu CI")
-          (cd data && git config user.email "noxitu-ci@null")
-          (cd data && git config --list)
-
           if [ -n "$(cd data && git status --porcelain)" ]; then
+            (cd data && git config user.name "Noxitu CI")
+            (cd data && git config user.email "noxitu-ci@null")
             (cd data && git add --all && git commit -m "updated data/")
+            
+            (cd data && git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }})
             (cd data && git push --set-upstream origin data)
           fi
 
